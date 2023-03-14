@@ -1,0 +1,428 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link  href="script.js">
+    <title>Document</title> 
+    <style> 
+        *{ 
+            box-sizing: border-box; 
+            margin:0; 
+        } 
+        .container{ 
+            width: 100vw; 
+            height: 600px; 
+            background: url(img/prrda2-scaled.jpg) no-repeat left top /cover; 
+             
+            
+ 
+        } 
+        .footer{ 
+            width: 100vw; 
+            height:50vh; 
+            background-color: blue; 
+            padding-top: 50px; 
+            padding-bottom: 20px; 
+            background: url(img/трва.jpg) no-repeat left top /cover; 
+            display: flex;  
+            justify-content: center;  
+            text-align: center;  
+            align-items: center; 
+        } 
+        .header{ 
+            width: 100vw; 
+            height: 100px; 
+            background: url(img/новое\ небо.jpg) no-repeat left top /cover; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+        } 
+        .weather{ 
+            font-size: 50px; 
+            margin:0; 
+ 
+        } 
+        .circle{ 
+            height: 300px; 
+            width: 300px; 
+            border-radius: 50%; 
+           
+        } 
+
+        .img{
+            height: 300px;
+            width: 300px;
+            border-radius: 50%;
+        }
+
+        .temperature{ 
+            width: 20vw; 
+            height: 20vw; 
+            border-radius: 50%; 
+           /*  background-color: rgb(212, 25, 230); */ 
+            display: flex;  
+            justify-content: center;  
+            text-align: center;  
+            align-items: center; 
+             
+            box-shadow: 1px 1px 10px 10px rgb(78, 74, 74); 
+             
+ 
+        } 
+        .papa{ 
+            width: 100vw; 
+            height:110vh; 
+            
+ 
+        } 
+        .temp_c{ 
+            
+            font-size: 10rem; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+ 
+        } 
+        .main{ 
+            width:100vw; 
+            height: 500px; 
+            display: flex;  
+            justify-content: space-around;  
+            text-align: center;  
+            align-items: center; 
+        } 
+        .C{ 
+            width: 6vw; 
+            height: 20vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            background: url(img/celsius-degrees-sign_icon-icons.com_64204.png) no-repeat left top /cover;
+        } 
+        .teC{ 
+            font-size: 10rem; 
+            
+
+        } 
+        .wind{
+            width: 400px;
+            height: 300px;
+            border-radius: 50%;
+            font-size: 7rem;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            background: url(img/5036179.png) no-repeat left top /cover;
+        }
+        .humidity{
+            width: 400px;
+            height: 300px;
+            border-radius: 50%;
+            font-size: 7rem;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            background: url(img/1975551.png) no-repeat left top /cover;
+            
+        }
+        .Presant{
+            font-size: 7rem;
+        }
+        .divPre{
+            width: 100px;
+            height: 100px;
+
+        }
+        .ApiH{
+            width: 100px;
+            height:100px;
+        }
+
+        .prosto{
+            width: 100vw;
+            height: 500px;
+            position: absolute;
+            top:0;
+            left:0;
+        }
+        
+ 
+    </style> 
+</head> 
+<body> 
+     
+   <div class = "papa"> 
+        <div class="container"> 
+        <div class="header"> 
+            <p class="weather">Погода Беларусь</p> 
+        </div> 
+        <div class = "main"> 
+            <div class = "wind">
+                
+            </div>
+            <div class="circle">
+                <img src="" alt="Weather" class = "img">
+            </div> 
+            <div class = "humidity">
+                <div class = "ApiH"></div>
+                <div class = "divPre">
+                    <p class = "Presant">%</p>
+                </div>
+                
+            </div>
+            
+
+        </div> 
+             
+    </div> 
+    <div class = footer> 
+        <div class = "temperature"> 
+           <div class = "temp_c"></div> 
+           <div class = "C"> 
+               <p class = "teC"></p> 
+           </div> 
+        </div> 
+    </div> 
+</div> 
+<!-- <div class = "prosto"></div> -->
+ 
+    <script>
+        let celB = document.createElement('div')
+        let windBrest = document.createElement('div')
+        let iconB = document.createElement('div');
+        let humidityBrest = document.createElement('div');
+        let header = document.querySelector('.header');
+        let imageB = document.createElement('img')
+        let brestT = document.createElement('div');
+        let brestCel = document.createElement('div');
+        let brestW = document.createElement('div')
+        let Prosto = document.querySelector('.prosto')
+        let image = document.querySelector('.img'); 
+        let tempCard = document.querySelector('.temp_c'); 
+        let Wind = document.querySelector('.wind');
+        let Humidity = document.querySelector('.humidity')
+        let HApi = document.querySelector('.ApiH')
+        let box = document.querySelector('.circle');
+        let Container = document.querySelector('.container')
+        let url = `http://api.weatherapi.com/v1/current.json?key=daebc8d0a3d64617ad0153304231402&q=Minsk&aqi=no;` 
+        let urlB = `http://api.weatherapi.com/v1/current.json?key=daebc8d0a3d64617ad0153304231402&q=Brest&aqi=no`
+        let tempC; 
+        fetch(url) 
+            .then(res => res.json()) 
+            .then((res) => { 
+                console.log(res);
+                 tempCard.innerText = res.current.temp_c; 
+                 image.src = 'https:' + res.current.condition.icon; 
+                 Wind.innerText = res.current.wind_kph;
+                 HApi.innerText = res.current.humidity;
+
+
+                if(res.current.temp_c <= 0){
+                    box.style.boxShadow =  '10px 5px 5px 5px white';
+                }else{
+                    console.log('error white');
+                }
+
+
+                if(res.current.temp_c > 10){
+                    box.style.boxShadow = '10px 5px 5px 5px gold';
+                }else{
+                    console.log('error gold');
+                } 
+
+
+
+                if(res.current.temp_c > 0  || res.current.temp_c <= 10){
+                    box.style.boxShadow = '10px 5px 5px 5px rgba(11, 93, 156, 0.616) '
+                }else {
+                    console.log = ('error rgba')
+                }
+                  
+                
+            }) 
+            fetch(urlB) 
+            .then(res1 => res1.json()) 
+            .then((res1) => { 
+                console.log(res1);
+                celB.innerText = res1.current.temp_c;
+                imageB.src = 'https:' + res1.current.condition.icon;
+                windBrest.innerText = res1.current.wind_kph;
+                humidityBrest.innerText = res1.current.humidity;
+
+            }) 
+            
+            
+            
+                /* console.log(res); */
+ let world = document.querySelector('.header'); 
+    world.style.backgroundSize = '100vw 300px' 
+    console.log('world') 
+ 
+let word = document.querySelector('.weather'); 
+word.style.color ='black'; 
+word.style.shadow ='black'; 
+ 
+ 
+let grass = document.querySelector('.footer'); 
+grass.style.backgroundSize = '100vw 50vh'  
+
+let Celsius = document.querySelector('.C');
+Celsius.style.backgroundSize = '80px 170px'
+
+
+Wind.style.backgroundSize = '400px 300px';
+Wind.style.color = '#ADD8E6';
+
+Humidity.style.backgroundSize = '400px 300px';
+Humidity.style.color = 'Blue';
+
+brestCel.style.width = '100vw';
+brestCel.style.height = '50%'
+brestCel.style.backgroundColor = 'red'
+brestCel.style.background = 'url(img/prrda2-scaled.jpg) no-repeat left top /cover'
+brestCel.style.backgroundSize = '100vw 100vh';
+brestCel.style.display = 'flex';
+brestCel.style.justifyContent = 'space-around';
+brestCel.style.alignItems = 'center';
+brestCel.style.textAlign = 'center'
+
+brestW.style.width = '100vw';
+brestW.style.height = '50%'
+brestW.style.backgroundColor = 'red';
+brestW.style.background = 'url(img/трва.jpg) no-repeat left top /cover'
+brestW.style.backgroundSize = '100vw 60vh';
+brestW.style.display = 'flex';
+brestW.style.justifyContent = 'center';
+brestW.style.alignItems = 'center';
+brestW.style.textAlign = 'center';
+
+
+
+brestT.style.width = '20vw';
+brestT.style.height = '20vw';
+brestT.style.borderRadius = '50%';
+brestT.style.display = 'flex';
+brestT.style.justifyContent = 'center';
+brestT.style.alignItems = 'center';
+brestT.style.textAlign = 'center'
+brestT.style.boxShadow = '1px 1px 10px 10px rgb(78, 74, 74)';
+
+windBrest.style.width = '400px';
+windBrest.style.height = '300px';
+windBrest.style.borderRadius = '50%';
+windBrest.style.display = 'flex';
+windBrest.style.justifyContent = 'center';
+windBrest.style.alignItems = 'center';
+windBrest.style.textAlign = 'center'
+windBrest.style.background = 'url(img/5036179.png) no-repeat left top /cover, rgba(256, 54, 334, .5)';
+windBrest.style.backgroundSize = '400px 300px' 
+windBrest.style.fontSize = '7rem';
+windBrest.style.color = 'blue'
+
+
+celB.style.width = '75px';
+celB.style.height = '175px';
+celB.style.backgroundColor = '/* red */';
+celB.style.display = 'flex';
+celB.style.justifyContent = 'center';
+celB.style.alignItems = 'center';
+celB.style.textAlign = 'center'
+celB.style.fontSize = '7rem';
+celB.style.padding = '30px';
+
+
+imageB.style.width = '20vw';
+imageB.style.height = '20vh';
+
+
+iconB.style.width = '20vw';
+iconB.style.height = '20vw';
+iconB.style.borderRadius = '50%';
+iconB.style.display = 'flex';
+iconB.style.background = ''
+iconB.style.justifyContent = 'center';
+iconB.style.alignItems = 'center';
+iconB.style.textAlign = 'center'
+iconB.style.boxShadow = '1px 1px 10px 10px rgb(0, 34, 14)';
+
+
+
+
+
+
+humidityBrest.style.width = '400px';
+humidityBrest.style.height = '300px';
+humidityBrest.style.borderRadius = '50%';
+humidityBrest.style.display = 'flex';
+humidityBrest.style.justifyContent = 'center';
+humidityBrest.style.alignItems = 'center';
+humidityBrest.style.textAlign = 'center'
+humidityBrest.style.background = 'url(img/1975551.png) no-repeat left top /cover, rgba(156, 54, 234, .5)';
+/* humidityBrest.style.backgroundColor = 'red' */;
+humidityBrest.style.backgroundSize = '400px 300px';
+humidityBrest.style.color = 'blue';
+humidityBrest.style.fontSize = '7rem'
+
+
+
+
+
+/* width: 20vw; 
+            height: 20vw; 
+            border-radius: 50%; 
+             background-color: rgb(212, 25, 230); 
+            display: flex;  
+            justify-content: center;  
+            text-align: center;  
+            align-items: center; 
+             
+            box-shadow: 1px 1px 10px 10px rgb(78, 74, 74); */
+
+
+
+
+
+
+let cityBrest  = document.createElement('button');
+cityBrest.style.width = '150px';
+cityBrest.style.height =  '70px'
+header.append(cityBrest);
+cityBrest.innerText = 'Брест';
+cityBrest.style.fontSize = '3rem'
+ let Cont;
+cityBrest.addEventListener('click', function(){
+    console.log(123123);
+    Cont = document.createElement('div');
+    Cont.style.width = '100vw';
+    Cont.style.height = '120vh';
+    Cont.style.backgroundColor = 'black';
+    Container.append(Cont)
+    Cont.style.top = '100px';
+    Cont.style.position = 'absolute';
+    Cont.style.left = '0px'
+     Cont.append(brestCel);
+     Cont.append(brestW);
+     brestW.append(brestT)
+     brestT.append(celB);
+     brestCel.append(windBrest);
+     brestCel.append(iconB);
+     brestCel.append(humidityBrest);
+     iconB.append(imageB);
+     
+
+
+});
+
+
+
+
+    </script> 
+</body> 
+</html>
